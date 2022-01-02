@@ -1,20 +1,26 @@
-# requests
+# install lxml
 
 import requests
 import random
-
+from lxml import etree
 def main():
-    proxies_test()
+    #proxies_test()
+    test2()
 
-def test1():
-    url='https://www.baidu.com/s'
-    resp=requests.get(url=url,params=setkwd(),headers=random_ua(),proxies=random_ip())
-    if(resp.status_code==200):
-        text=resp.content.decode('utf-8')
-        saves(text)
+def test2():
+    url='https://movie.douban.com/review/14107342/'
+    try:
+        req=requests.get(url,headers=random_ua(),timeout=100)
+        rsp=req.content
+        htmls=etree.HTML(rsp)
+        result=etree.tostring(htmls,encoding='utf-8').decode('utf-8')
+        saves(result)
+    except Exception as e:
+        print("Error:",e)
+
 
 def setkwd():
-    need=True
+    need=False
     str=''
     if(need):
         str=input("输入你要查询的信息:")   
@@ -44,20 +50,26 @@ def random_ip():
     ip_list=[
         # 代理IP：https://ip.jiangxianli.com/?page=1
         # 注意：许多IP不一定可用，使用前建议测试一下http://httpbin.org/get
-        '176.9.119.170:8080',
-        '106.14.187.182:21673'
+        # ==========非高匿或不可用list==========
+        #
+        # ===============可用list===============
+        '120.34.194.172:7082',
+        # ==============测试区list==============
+        #
     ]
     temp=random.choice(ip_list)
     ips={
         'http':'http://'+temp,
         'https':'https://'+temp
     }
+    print('\n'+'选择了IP:\t'+temp+'\n')
     return ips
 
 def proxies_test():
     url='http://httpbin.org/get'
     try:
-        resp=requests.get(url,proxies=random_ip(),headers=random_ua(),timeout=100,allow_redirects=False)
+        #resp=requests.get(url,proxies=random_ip(),headers=random_ua(),timeout=100,allow_redirects=False)
+        resp=requests.get(url,headers=random_ua(),timeout=100,allow_redirects=False)
         if(resp.status_code==200):
             text=resp.content.decode('utf-8')
             print(text)
@@ -66,13 +78,14 @@ def proxies_test():
 
 def saves(filename):
     str=input("输入文件名|带后缀：")
-    str='opsc1/'+str
+    str='opsc2/opsc2r/'+str
     with open(str,mode='w',encoding='utf-8') as f:
         f.write(filename)
     print('save,end!\n')
 
 if __name__=='__main__':
     main()
+
 
 
 
