@@ -23,7 +23,7 @@ def random_ua():
 # Params传参设定函数
 def setkwd(offset):
     need=False
-    str='061fad6c8ce74bcb2c74b2e4afc8e8ecp5rah'
+    str='bdacc9c7e0c37c67c9833370244d23f2lvssf'
     if(need):
         str=input("输入你要查询的信息:")   
     kwd={
@@ -35,21 +35,25 @@ def setkwd(offset):
 # XPath匹配和输出函数(其中，html为content值)
 def xfind(html,xpaths):
     # 解析函数与解码
-    ans=html.xpath(xpaths)
-    print(ans)
+    ans_list=html.xpath(xpaths)
+    # print(ans)
     item={}
-    for dd in ans:
+    for ans in ans_list:
         # 处理字典数据，注意xpath表达式匹配结果是一个列表，因此需要索引[0]提取数据.strip()
-        a=dd.xpath('//div/div/div/p[1]/a')[0]
-        b=dd.xpath('//div/div/div/p[2]')[0]
-        c=dd.xpath('//div/div/div/p[3]')[0]
-        name=etree.tostring(a,encoding='utf-8').decode('utf-8','ignore')
-        star=etree.tostring(b,encoding='utf-8').decode('utf-8','ignore')
-        timp=etree.tostring(c,encoding='utf-8').decode('utf-8','ignore')
-        lists=[name,star,timp]
-        svs(lists)
+        # a=ans.xpath('.//div/div/div/p[1]/a')[0]
+        # b=ans.xpath('.//div/div/div/p[2]')[0]
+        # c=ans.xpath('.//div/div/div/p[3]')[0]
+        # name=etree.tostring(a,encoding='utf-8').decode('utf-8','ignore')
+        # star=etree.tostring(b,encoding='utf-8').decode('utf-8','ignore')
+        # timp=etree.tostring(c,encoding='utf-8').decode('utf-8','ignore')
+        # lists=[name,star,timp]
+        item['name']=ans.xpath('.//p[@class="name"]/a/text()')[0].strip()
+        item['star']=ans.xpath('.//p[@class="star"]/text()')[0].strip()
+        item['time']=ans.xpath('.//p[@class="releasetime"]/text()')[0].strip()
+        # svs(lists)
         # 输出数据
-        # print(item)
+        print(item)
+        svs(item)
 
 
 # //*[@id="app"]/div/div/div/dl/dd
@@ -59,18 +63,18 @@ def xfind(html,xpaths):
 
 def svs(filename):
     with open('opsc3/opsc3_r/lis2.csv',mode='a',encoding='utf-8',newline='') as f:
-        writer=csv.writer(f)
+        writer=csv.DictWriter(f,fieldnames=['name','star','time'])
+        # writer.writeheader()
         writer.writerow(filename)
         print('end!')
 
 def run():
     url='https://www.maoyan.com/board/4'
     try:
-        req=requests.get(url=url,params=setkwd('0'),headers=random_ua(),timeout=200)
-        if req.status_code==200:
-            resp=req.content
-            texts=etree.HTML(resp)
-            xfind(texts,'//*[@id="app"]/div/div/div/dl/dd')
+        req=requests.get(url=url,params=setkwd('0'),headers=random_ua(),timeout=200).text
+        # resp=req.content
+        texts=etree.HTML(req)
+        xfind(texts,'//*[@id="app"]/div/div/div/dl/dd')
     except Exception as e:
         print('Error:',e)
 
