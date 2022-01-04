@@ -33,3 +33,8 @@ dataSplit.py是分割数据的python文件
 parses.py是爬虫文件
 
 #### 其他opsc[i]文件夹的是测试文件
+
+### 简化信息
+
+#### fieldnames=['locationa','locationb','configsa','configsb','areas','decorates','floors','evers','typs','price','followers']
+保存在：ishomework\rescources\isAnalys.csv中
