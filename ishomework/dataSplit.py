@@ -1,5 +1,6 @@
 import pandas
 import csv
+# 欲寄彩笺兼尺素，山长水阔知何处
 # # 表头添加测试
 # def addheaders():
 #     df = pandas.read_csv('opsc5\opsc5_r\islist0.csv',encoding='utf-8',header=None,names=['title','locationa','locationb','square','price','follow'])

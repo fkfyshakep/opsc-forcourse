@@ -1,6 +1,6 @@
 # https://bj.lianjia.com/ershoufang/
 # 对上方的二手房网站爬取
-# 团子 
+# 记得金銮同唱第，春风上国繁华。
 
 import requests
 import random

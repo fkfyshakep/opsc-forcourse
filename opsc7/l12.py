@@ -1,5 +1,5 @@
 # 细化分组，去除不必要的数据
-# 顾余九逝魂，与子各何之；我歌诚自恸，非独为君悲
+# 汩余若将不及兮，恐年岁之不吾与。
 import pandas
 import csv
 import string
@@ -100,7 +100,7 @@ def floors(aline,num):
         print('Error:',e)
         return ''
 
-# 针对面积的areas的处理，正则表达式匹配 返回一个int
+# 针对面积的areas的处理，正则表达式匹配 返回一个float
 def areas(aline,num):
     try:
         str_areas=aline.iloc[num]['areas']
@@ -143,4 +143,4 @@ def main():
     tst()
 
 if __name__=='__main__':
-    main()       
+    main()  
