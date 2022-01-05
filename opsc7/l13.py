@@ -1,11 +1,13 @@
 # 数据可视化
 # 流萤漫天花共舞，闲蝉栖柳风奏湖
 # pip install pyecharts
+from typing import Counter
 import pyecharts
 import pandas
 import csv
 import matplotlib.pyplot as plt
 import numpy as np
+import matplotlib
 
 plt.rcParams['font.sans-serif'] = ['SimHei']
 plt.rcParams['axes.unicode_minus'] = False 
@@ -176,21 +178,7 @@ def areatest2(df):
     ##############################
     plt.savefig('opsc7\photos\ps4.png',dpi = 400)
     plt.show()
-    '''
-    advertistitle    格局方正 采光好 保持的很干净 业主自住
-    locationa                     新华联家园南区
-    locationb                          果园
-    configs                         3室2厅
-    areas                       119.18平米#
-    directs                        南 西 北
-    decorates                         精装
-    floors                      中楼层(共7层)
-    evers                         2002年建
-    typs                               板楼#
-    price                       44,052元/平
-    followers                      47人关注
-    publish                       1个月以前发布
-    '''
+
 # 楼房类型 分布 板楼塔楼，板塔楼结合，其它
 def decoratetest(df):
     li=listca(df,strs='decorates')
@@ -242,10 +230,68 @@ def decoratetest2(df):
     plt.savefig('opsc7\photos\ps6.png',dpi = 400)
     plt.show()
 
+# ========================================================================================================== #
+# 晓来雨过，遗踪何在？一池萍碎。春色三分，二分尘土，一分流水。细看来，不是杨花，点点是离人泪。
+# 2022/1/5 数据分析
+# 对价格的分析
+# ========================================================================================================== #
+    '''
+    advertistitle    格局方正 采光好 保持的很干净 业主自住
+    locationa                     新华联家园南区
+    locationb                          果园
+    configs                         3室2厅
+    areas                       119.18平米#
+    directs                        南 西 北
+    decorates                         精装#
+    floors                      中楼层(共7层)
+    evers                         2002年建
+    typs                               板楼#
+    price                       44,052元/平
+    followers                      47人关注
+    publish                       1个月以前发布
+    '''
+
+def pricetest(df):
+    li=listca(df,strs='price')
+    ylist=[]
+    counter=0
+    ca=0
+    cb=0
+    numlist=[]
+    for num in range(0,2400):
+        if li[num]<=40000:
+            ca+=1
+        elif li[num]>120000:
+            cb+=1
+        else:
+            continue
+    numlist.append(ca)
+    for s in range(40000,120000,10000):
+        counters=0
+        for num in range(0,2400):
+            if(li[num]>s and li[num]<=(s+10000)):
+                counters+=1
+            else:
+                continue
+        numlist.append(counters)
+    numlist.append(cb)
+    xlist=['小于4万','4~5万','5~6万','6~7万','7~8万','8~9万','9~10万','10~11万','11~12万','大于12万']
+    resp=plt.bar(xlist, numlist,0.5,edgecolor='red',alpha=0.8)  # 横放条形图函数 barh
+    plt.title('楼房单位面积的价格分布(柱状图)')
+    ##############################设置xy轴字体大小 left
+    plt.xticks(fontproperties = 'Times New Roman', size = 4)
+    plt.yticks(fontproperties = 'Times New Roman', size = 5)
+    ##############################设置数据标签
+    for a,b in zip(xlist,numlist):
+        plt.text(a,b,b,ha='center',va='bottom',fontsize=6)
+    ##############################
+    # plt.savefig('opsc7\photos\ps7.png',dpi = 400)
+    plt.show()
+
 # 在runs中修改调用的函数名，以调用不同函数
 # fieldnames=['locationa','locationb','configsa','configsb','areas','decorates','floors','evers','typs','price','followers']
 def runs(df):
-    decoratetest2(df)
+    pricetest(df)
     
 def main():
     tst()
